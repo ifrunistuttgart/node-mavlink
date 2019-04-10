@@ -1,0 +1,17 @@
+{
+  "name": "node-mavlink-example-js",
+  "version": "0.1.0",
+  "description": "A javascript example for parsing and packing MAVLink 2 messages",
+  "main": "index.js",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Pascal Groß <pascal.gross@ifr.uni-stuttgart.de>",
+  "license": "CC-BY-4.0",
+  "dependencies": {
+    "serialport": "^7.1.4"
+  }
+}

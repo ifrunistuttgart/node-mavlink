@@ -10,7 +10,8 @@ afterAll(() => {
 });
 
 beforeEach(() => {
-    mavlinkModule = new MAVLinkModule(2);
+    mavlinkModule = new MAVLinkModule();
+    mavlinkModule.upgradeLink();
 });
 
 afterEach(() => {
@@ -29,7 +30,7 @@ test('MessageStartTwoPass', () => {
     expect(mavlinkModule.parser.state).toBe(ParserState.WaitingForHeaderComplete);
 });
 
-test('MessageStartNotFound', () => {
+test('NoMessageStart', () => {
     mavlinkModule.parse(Buffer.from([0x02, 0x11, 0xFF, 0XFE]));
     // @ts-ignore
     expect(mavlinkModule.parser.state).toBe(ParserState.WaitingForMagicByte);

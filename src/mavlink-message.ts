@@ -14,6 +14,51 @@ export function readInt64LE(buffer: Buffer, offset: number): number {
     return toDouble(high, low, true)
 }
 
+export function writeInt64LE(buffer: Buffer, value: number, offset: number): void {
+    offset = offset || 0;
+    var hl = intHighLow(value);
+    buffer.writeUInt32LE(hl[1], offset);
+    buffer.writeUInt32LE(hl[0], offset + 4);
+}
+
+export function writeUInt64LE(buffer: Buffer, value: number, offset: number): void {
+    offset = offset || 0;
+    var hl = uintHighLow(value);
+    buffer.writeUInt32LE(hl[1], offset);
+    buffer.writeUInt32LE(hl[0], offset + 4);
+}
+
+function intHighLow(value: number) {
+    const MAX_UINT32 = 0x00000000FFFFFFFF;
+    if (value > -1) {
+        return uintHighLow(value)
+    }
+    const hl = uintHighLow(-value);
+    let high = onesComplement(hl[0]);
+    let low = onesComplement(hl[1]);
+    if (low === MAX_UINT32) {
+        high += 1;
+        low = 0
+    } else {
+        low += 1
+    }
+    return [high, low]
+}
+
+function uintHighLow(value: number) {
+    const MAX_UINT32 = 0x00000000FFFFFFFF;
+    const MAX_INT53 = 0x001FFFFFFFFFFFFF;
+    assert(() => value > -1 && value <= MAX_INT53, "number out of range");
+    assert(() => Math.floor(value) === value, "number must be an integer");
+    let high = 0;
+    const signbit = value & 0xFFFFFFFF;
+    const low = signbit < 0 ? (value & 0x7FFFFFFF) + 0x80000000 : signbit;
+    if (value > MAX_UINT32) {
+        high = (value - low) / (MAX_UINT32 + 1);
+    }
+    return [high, low]
+}
+
 function toDouble(high: number, low: number, signed: boolean) {
     // adapted from https://github.com/dannycoates/int53
     const MAX_UINT32 = 0x00000000FFFFFFFF;
@@ -48,10 +93,12 @@ export interface IMAVLinkMessage {
     _component_id: number;
     _message_id: number;
     _message_name: string;
-    _message_fields: string[];
+    _message_fields: [string, string, boolean][];
+    _payload_length: number;
     _crc_extra: number;
+    _extension_length: number;
 
-    patchValues(bytes: Buffer): void;
+    sizeof(type: string): number;
 }
 
 export interface IIndexable {
@@ -64,8 +111,69 @@ export abstract class MAVLinkMessage implements IMAVLinkMessage, IIndexable {
 
     abstract _message_name: string;
     abstract _message_id: number;
-    abstract _message_fields: string[];
+    abstract _message_fields: [string, string, boolean][];
     abstract _crc_extra: number;
 
-    public abstract patchValues(bytes: Buffer): void;
+    get _payload_length(): number {
+        let length = 0;
+        for (let field of this._message_fields.filter(field => !field[2])) {
+            length += this.sizeof(field[1]);
+        }
+        return length;
+    }
+
+    get _extension_length(): number {
+        let length = 0;
+        for (let field of this._message_fields.filter(field => !field[2])) {
+            length += this.sizeof(field[1]);
+        }
+        return length;
+    }
+
+    [key: string]: any;
+
+    public sizeof(type: string): number {
+        switch (type) {
+            case "char":
+            case "uint8_t":
+            case "int8_t":
+                return 1;
+            case "uint16_t":
+            case "int16_t":
+                return 2;
+            case "uint32_t":
+            case "int32_t":
+                return 4;
+            case  "int64_t":
+            case "uint64_t":
+                return 8;
+            case "float":
+                return 4;
+            case "double":
+                return 8;
+            default:
+                return 0;
+        }
+
+    }
+
+    public x25CRC(bytes: Buffer) {
+        let crc = 0xffff;
+        bytes.forEach(function (b) {
+            let tmp = (b & 0xff) ^ (crc & 0xff);
+            tmp ^= tmp << 4;
+            tmp &= 0xff;
+            crc = (crc >> 8) ^ (tmp << 8) ^ (tmp << 3) ^ (tmp >> 4);
+            crc &= 0xffff;
+        });
+
+        if (this._crc_extra) {
+            let tmp = (this._crc_extra & 0xff) ^ (crc & 0xff);
+            tmp ^= tmp << 4;
+            tmp &= 0xff;
+            crc = (crc >> 8) ^ (tmp << 8) ^ (tmp << 3) ^ (tmp >> 4);
+            crc &= 0xffff;
+        }
+        return crc;
+    }
 }

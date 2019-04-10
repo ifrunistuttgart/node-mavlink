@@ -70,6 +70,7 @@
   ],
   "exclude": [
     "node_modules",
+    "example",
     "**/__tests__/*"
   ]
 }

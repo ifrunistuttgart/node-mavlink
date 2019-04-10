@@ -1,4 +1,4 @@
-import {IMAVLinkMessage, MAVLinkMessage} from "./mavlink-message";
+import {MAVLinkMessage} from "./mavlink-message";
 import {ParserState} from "./parser-state.enum";
 
 export abstract class MAVLinkParserBase {
@@ -69,33 +69,13 @@ export abstract class MAVLinkParserBase {
 
     protected abstract calculate_packet_length(bytes: Buffer): number;
 
-    protected abstract parseMessage(bytes: Buffer): MAVLinkMessage;
-
-    protected x25CRC(bytes: Buffer, extra?: number) {
-        let crc = 0xffff;
-        bytes.forEach(function (b) {
-            let tmp = (b & 0xff) ^ (crc & 0xff);
-            tmp ^= tmp << 4;
-            tmp &= 0xff;
-            crc = (crc >> 8) ^ (tmp << 8) ^ (tmp << 3) ^ (tmp >> 4);
-            crc &= 0xffff;
-        });
-
-        if (extra) {
-            let tmp = (extra & 0xff) ^ (crc & 0xff);
-            tmp ^= tmp << 4;
-            tmp &= 0xff;
-            crc = (crc >> 8) ^ (tmp << 8) ^ (tmp << 3) ^ (tmp >> 4);
-            crc &= 0xffff;
-        }
-        return crc;
-    }
+    protected abstract parseMessage(bytes: Buffer): MAVLinkMessage | undefined;
 
     public register<T extends MAVLinkMessage>(message_id: number, constructorFn: new (system_id: number, component_id: number) => T) {
         this.message_factory_tuples.push([message_id, constructorFn]);
     }
 
-    protected instantiateMessage(system_id: number, component_id: number, message_id: number) {
+    public instantiateMessage(system_id: number, component_id: number, message_id: number) {
         const message_factory_tuple = this.message_factory_tuples.find(message_factory_tuple => message_factory_tuple[0] == message_id);
         if (message_factory_tuple) {
             const constructorFn: (new (system_id: number, component_id: number) => MAVLinkMessage) = message_factory_tuple[1];
