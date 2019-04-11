@@ -15,19 +15,17 @@ export abstract class MAVLinkParserBase {
     }
 
     public parse(bytes: Buffer): MAVLinkMessage[] {
-        this.buffer = Buffer.concat([this.buffer, bytes]);
         const messages: MAVLinkMessage[] = [];
 
         if (this.state == ParserState.WaitingForMagicByte) {
             // look for the defined magic byte
-            let message_start = this.buffer.indexOf(this.start_marker);
+            let message_start = bytes.indexOf(this.start_marker);
             if (message_start > -1) {
-                this.buffer = this.buffer.slice(message_start);
+                this.buffer = bytes.slice(message_start);
                 this.state = ParserState.WaitingForHeaderComplete;
-            } else {
-                // there was no magic byte. trash the whole buffer
-                this.buffer = Buffer.alloc(0);
             }
+        } else {
+            this.buffer = Buffer.concat([this.buffer, bytes]);
         }
 
         if (this.state == ParserState.WaitingForHeaderComplete) {
