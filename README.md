@@ -10,7 +10,11 @@ I will try to publish the module on npm. Until then, you need to download the pa
     npm install node-mavlink-0.1.0.tgz
 
 ## Usage
-To be able to use this module, the MAVLink message definitions need to be parsed using our fork of [pymavlink](https://github.com/ifrunistuttgart/pymavlink).
+To be able to use this module, the MAVLink message definitions need to be parsed using our fork of [pymavlink](https://github.com/ifrunistuttgart/pymavlink), which creates the TypeScript classes.
+Using the command-line interface, the classes can be generated using:
+
+    python tools
+
 ## Examples
 ### TypeScript
 
@@ -18,5 +22,5 @@ To be able to use this module, the MAVLink message definitions need to be parsed
 
 ### JavaScript
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTYyNDk4ODc2N119
+eyJoaXN0b3J5IjpbLTE3MTYwNjA3ODVdfQ==
 -->
