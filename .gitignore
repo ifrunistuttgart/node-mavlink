@@ -4,3 +4,4 @@ src/enums
 src/messages
 .idea
 assets/
+coverage/
