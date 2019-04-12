@@ -3,9 +3,11 @@ node_js :
  - stable
 python:
  - 2.7
-install:
- - sudo apt-get install libffi-dev libssl-dev 
+before_install:
+ - sudo apt-get update
+ - sudo apt-get install -y libffi-dev libssl-dev 
  - sudo pip install pyopenssl future
+install:
  - git clone https://github.com/ifrunistuttgart/pymavlink
  - git clone https://github.com/mavlink/mavlink
  - python pymavlink/tools/mavgen.py --lang TypeScript --wire-protocol 2.0 -o ./assets ./mavlink/message_definitions/v1.0/common.xml
