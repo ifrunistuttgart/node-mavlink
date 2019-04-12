@@ -1,22 +1,14 @@
-matrix:
- include:
-  - language: python
-    python:
-     - "2.7"
-    before_install:
-     - pip install --upgrade pip
-    install:    
-     - git clone https://github.com/ifrunistuttgart/pymavlink 
-     - pip install -r requirements.txt
-     - pip install flake8 pytest pytest-mock
-     - git clone https://github.com/mavlink/mavlink
-    script:
-     - python pymavlink/tools/mavgen.py --lang TypeScript --wire-protocol 2.0 -o ./assets ./mavlink/message_definitions/v1.0/common.xml
-  
-  - language : node_js
-    node_js :
-     - stable
-    install:
-     - npm install
-    script:
-     - npm test
+language : node_js
+ node_js :
+  - stable
+ before_install:
+  - pip install --upgrade pip
+  - git clone https://github.com/ifrunistuttgart/pymavlink 
+  - pip install -r requirements.txt
+  - pip install flake8 pytest pytest-mock
+  - git clone https://github.com/mavlink/mavlink  
+  - python pymavlink/tools/mavgen.py --lang TypeScript --wire-protocol 2.0 -o ./assets ./mavlink/message_definitions/v1.0/common.xml
+ install:
+  - npm install
+ script:
+  - npm test
