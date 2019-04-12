@@ -8,8 +8,8 @@ before_install:
  - git clone https://github.com/mavlink/mavlink  
  - mkdir assets
  - python pymavlink/tools/mavgen.py --lang TypeScript --wire-protocol 2.0 -o ./assets ./mavlink/message_definitions/v1.0/common.xml
- - ln -s . node_modules/node-mavlink
 install:
  - npm install
+ - ln -s . node_modules/node-mavlink
 script:
  - npm test
