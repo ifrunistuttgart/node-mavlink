@@ -15,7 +15,7 @@ Using the command-line interface, the classes can be generated using
 
     python tools/mavgen.py -o ./assets --lang TypeScript --wire-protocol 2.0 <message_definition.xml>
 which will produce all needed TypeScript files in a folder called *assets*. Instead of *<message_definition.xml>* you will probably use *common.xml*.
-Together with the all messages (*classes) and enums
+Together with the all messages (*classes* directory) and enums (*enums* directory), a file *messageRegistry.ts* is created, which 
 ## Examples
 ### TypeScript
 
@@ -23,5 +23,5 @@ Together with the all messages (*classes) and enums
 
 ### JavaScript
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTU5NjE4Mzk5MSwtMTYyNjkzMzQ5NV19
+eyJoaXN0b3J5IjpbMTMzMTA4MjgyMywtMTYyNjkzMzQ5NV19
 -->
