@@ -17,7 +17,14 @@ Using the command-line interface, the classes can be generated using
 which will produce all needed TypeScript files in a folder called *assets*. Instead of *<message_definition.xml>* you will probably use *common.xml*.
 Together with the all messages (*classes* directory) and enums (*enums* directory), a file *messageRegistry.ts* is created, which provides an array holding all message IDs and the respective constructor.
 
-If you want to use the library with pure javaScript, 
+If you want to use the library with pure JavaScript, you need to transpile the generated files. You can install the transpiler with:
+
+    npm i typescript --save-dev
+Then run within the *assets* directory
+
+    tsc
+ to start the process.
+
 ## Examples
 ### TypeScript
 
@@ -25,6 +32,6 @@ If you want to use the library with pure javaScript,
 
 ### JavaScript
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTExNDUyMjAwNDEsMTMzMTA4MjgyMywtMT
-YyNjkzMzQ5NV19
+eyJoaXN0b3J5IjpbLTYyMzA3NzMyNCwxMzMxMDgyODIzLC0xNj
+I2OTMzNDk1XX0=
 -->
