@@ -12,5 +12,6 @@ install:
  - npm install
  - npm run build
  - ln -s . node_modules/node-mavlink
+ - ls -al node_modules/node-mavlink
 script:
  - npm test
