@@ -11,7 +11,7 @@
     "test": "jest --config jestconfig.json",
     "build": "tsc",
     "lint": "tslint -p tsconfig.json",
-    "coveralls": "jest --config jestconfig.json --coverage && cat ./tests/coverage/lcov.info | coveralls"
+    "coveralls": "jest --config jestconfig.json --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
