@@ -1,6 +1,7 @@
 import {CommandLong} from "../../../assets/messages/command-long";
 import {MavCmd} from "../../../assets/enums/mav-cmd";
 import {MAVLinkModule} from "../../mavlink-module";
+import {messageRegistry} from "../../../assets/message-registry";
 
 let mavlinkModule: MAVLinkModule;
 
@@ -11,7 +12,7 @@ afterAll(() => {
 });
 
 beforeEach(() => {
-    mavlinkModule = new MAVLinkModule(1, false);
+    mavlinkModule = new MAVLinkModule(messageRegistry, 1, false);
     mavlinkModule.upgradeLink();
 });
 

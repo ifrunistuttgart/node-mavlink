@@ -1,5 +1,6 @@
 import {MAVLinkModule} from "../../mavlink-module";
 import {ParserState} from "../../parser-state.enum";
+import {messageRegistry} from "../../../assets/message-registry";
 
 let mavlinkModule: MAVLinkModule;
 
@@ -10,7 +11,7 @@ afterAll(() => {
 });
 
 beforeEach(() => {
-    mavlinkModule = new MAVLinkModule(1, false);
+    mavlinkModule = new MAVLinkModule(messageRegistry, 1, false);
 });
 
 afterEach(() => {

@@ -106,7 +106,7 @@ export interface IIndexable {
 }
 
 export abstract class MAVLinkMessage implements IMAVLinkMessage, IIndexable {
-    constructor(public _system_id: number, public _component_id: number) {
+    public constructor(public _system_id: number, public _component_id: number) {
     }
 
     abstract _message_name: string;
