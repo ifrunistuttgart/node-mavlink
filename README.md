@@ -13,8 +13,8 @@ I will try to publish the module on npm. Until then, you need to download the pa
 To be able to use this module, the MAVLink message definitions need to be parsed using our fork of [pymavlink](https://github.com/ifrunistuttgart/pymavlink), which creates the TypeScript classes.
 Using the command-line interface, the classes can be generated using
 
-    python tools/mavgen.py -o ./assets
-which will produce all needed TypeScript files i
+    python tools/mavgen.py -o ./assets --lang TypeScript --wire-protocol 2.0 <message_definition.xml>
+which will produce all needed TypeScript files in a folder called *assets*. Instead of *<message_definition.xml>* you will probably use *common.xml*.
 ## Examples
 ### TypeScript
 
@@ -22,5 +22,5 @@ which will produce all needed TypeScript files i
 
 ### JavaScript
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjg3NTQ0MjgzXX0=
+eyJoaXN0b3J5IjpbLTE2MjY5MzM0OTVdfQ==
 -->
