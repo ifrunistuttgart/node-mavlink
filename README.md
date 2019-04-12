@@ -11,10 +11,10 @@ I will try to publish the module on npm. Until then, you need to download the pa
 
 ## Usage
 To be able to use this module, the MAVLink message definitions need to be parsed using our fork of [pymavlink](https://github.com/ifrunistuttgart/pymavlink), which creates the TypeScript classes.
-Using the command-line interface, the classes can be generated using:
+Using the command-line interface, the classes can be generated using
 
-    python tools
-
+    python tools/mavgen.py -o ./assets
+which will produce all needed TypeScript files i
 ## Examples
 ### TypeScript
 
@@ -22,5 +22,5 @@ Using the command-line interface, the classes can be generated using:
 
 ### JavaScript
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3MTYwNjA3ODVdfQ==
+eyJoaXN0b3J5IjpbMjg3NTQ0MjgzXX0=
 -->
