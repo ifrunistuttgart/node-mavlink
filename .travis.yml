@@ -1,17 +1,19 @@
 language: node_js
 node_js:
- - stable
+  - stable
 before_install:
- - sudo pip install --upgrade pip
- - git clone https://github.com/ifrunistuttgart/pymavlink 
- - sudo pip install -r ./pymavlink/requirements.txt
- - git clone https://github.com/mavlink/mavlink  
- - mkdir assets
- - python pymavlink/tools/mavgen.py --lang TypeScript --wire-protocol 2.0 -o ./assets ./mavlink/message_definitions/v1.0/common.xml
+  - sudo pip install --upgrade pip
+  - git clone https://github.com/ifrunistuttgart/pymavlink
+  - sudo pip install -r ./pymavlink/requirements.txt
+  - git clone https://github.com/mavlink/mavlink
+  - mkdir assets
+  - python pymavlink/tools/mavgen.py --lang TypeScript --wire-protocol 2.0 -o ./assets ./mavlink/message_definitions/v1.0/common.xml
 install:
- - npm install
- - npm run build
- - ln -s $TRAVIS_BUILD_DIR node_modules/node-mavlink
- - ls -al node_modules/node-mavlink
+  - npm install
+  - npm run build
+  - ln -s $TRAVIS_BUILD_DIR node_modules/node-mavlink
+  - ls -al node_modules/node-mavlink
 script:
- - npm test
+  - npm run lint
+  - npm test
+  - npm run coveralls
