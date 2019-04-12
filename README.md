@@ -28,10 +28,10 @@ Then run within the *assets* directory
 ## Examples
 ### TypeScript
 
-    enter code here
+``ts
 
 ### JavaScript
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTYyMzA3NzMyNCwxMzMxMDgyODIzLC0xNj
-I2OTMzNDk1XX0=
+eyJoaXN0b3J5IjpbMjY3MzIyNjYsMTMzMTA4MjgyMywtMTYyNj
+kzMzQ5NV19
 -->
