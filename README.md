@@ -97,7 +97,9 @@ mavLink.on('HIGHRES_IMU', function (message) {
   console.log(message);  
 });
 ```
+# License
+node-mavlink is released under the GNU Lesser General Public License v3 or later.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwMDQ2MzI3MTMsMTMzMTA4MjgyMywtMT
-YyNjkzMzQ5NV19
+eyJoaXN0b3J5IjpbNzM0MTg2MjMwLC0yMDA0NjMyNzEzLDEzMz
+EwODI4MjMsLTE2MjY5MzM0OTVdfQ==
 -->
