@@ -4,12 +4,11 @@ node_js :
 python:
  - 2.7
 before_install:
- - sudo apt-get update
- - sudo apt-get install -y libffi-dev libssl-dev libxml2-dev
- - sudo pip install lxml libxml2 libxslt
- - sudo pip install requests[security] pyopenssl future
+  - pip install --upgrade pip
 install:
- - git clone https://github.com/ifrunistuttgart/pymavlink
+ - git clone https://github.com/ifrunistuttgart/pymavlink 
+ - pip install -r ./pymavlink/requirements.txt
+ - pip install flake8 pytest pytest-mock  
  - git clone https://github.com/mavlink/mavlink
  - python pymavlink/tools/mavgen.py --lang TypeScript --wire-protocol 2.0 -o ./assets ./mavlink/message_definitions/v1.0/common.xml
  - npm install
