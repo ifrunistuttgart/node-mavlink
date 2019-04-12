@@ -5,8 +5,8 @@ python:
  - 2.7
 before_install:
  - sudo apt-get update
- - sudo apt-get install -y libffi-dev libssl-dev 
- - sudo pip install pyopenssl future
+ - sudo apt-get install -y libffi-dev libssl-dev libxml2-dev
+ - sudo pip install pyopenssl future lxml libxml2 libxslt
 install:
  - git clone https://github.com/ifrunistuttgart/pymavlink
  - git clone https://github.com/mavlink/mavlink
