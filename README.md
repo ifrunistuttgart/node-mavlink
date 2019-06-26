@@ -10,7 +10,7 @@ I will try to publish the module on npm. Until then, you need to download the pa
     npm install node-mavlink-0.1.0.tgz
 
 ## Usage
-To be able to use this module, the MAVLink message definitions need to be parsed using our fork of [pymavlink](https://github.com/ifrunistuttgart/pymavlink), which creates the TypeScript classes.
+To be able to use this module, the MAVLink message definitions need to be parsed using the official [pymavlink](https://github.com/ArduPilot/pymavlink), which creates the TypeScript classes.
 Using the command-line interface, the classes can be generated using
 
     python tools/mavgen.py -o ./assets --lang TypeScript --wire-protocol 2.0 <message_definition.xml>
