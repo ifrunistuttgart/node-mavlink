@@ -5,9 +5,9 @@ node-mavlink is a library for parsing and packing MAVLink 2 messages using TypeS
 ### Limitations
 At this point, message signing is not supported.
 ## Installation
-I will try to publish the module on npm. Until then, you need to download the package and install it with:
+The module is published on npm. Install using:
 
-    npm install node-mavlink-0.1.0.tgz
+    npm install @ifrunistuttgart/node-mavlink --save
 
 ## Usage
 To be able to use this module, the MAVLink message definitions need to be parsed using the official [pymavlink](https://github.com/ArduPilot/pymavlink), which creates the TypeScript classes.
@@ -29,7 +29,7 @@ Then run within the *assets* directory
 ### TypeScript
 
 ```ts
-import {MAVLinkModule, MAVLinkMessage} from 'node-mavlink';  
+import {MAVLinkModule, MAVLinkMessage} from '@ifrunistuttgart/node-mavlink';  
 import {messageRegistry} from './assets/message-registry';  
   
 import Serialport from 'serialport';  
@@ -68,7 +68,7 @@ mavLink.on('HIGHRES_IMU', function (message: MAVLinkMessage) {
 ```js
 var SerialPort = require('serialport');  
 var messageRegistry = require('.assets/messageRegistry');  
-var mavLink = require('node-modules')(messageRegistry);  
+var mavLink = require('@ifrunistuttgart/node-mavlink')(messageRegistry);  
   
 var serialPort = new SerialPort('COM4', {  
     baudRate: 57600  
