@@ -1,5 +1,5 @@
 {
-  "name": "node-mavlink",
+  "name": "@ifrunistuttgart/node-mavlink",
   "version": "0.1.0",
   "description": "A library for parsing and packing MAVLink 2 messages",
   "main": "lib/index.js",

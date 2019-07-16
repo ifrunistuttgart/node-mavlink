@@ -22,8 +22,8 @@
  */
 
 var SerialPort = require('serialport');
-var messageRegistry = require('.assets/messageRegistry');
-var mavLink = require('node-modules')(messageRegistry);
+var messageRegistry = require('./assets/messageRegistry');
+var mavLink = require('@ifrunistuttgart/node-mavlink')(messageRegistry);
 
 var serialPort = new SerialPort('COM4', {
     baudRate: 57600

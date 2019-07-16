@@ -21,7 +21,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import {MAVLinkModule, MAVLinkMessage} from 'node-mavlink';
+import {MAVLinkModule, MAVLinkMessage} from '@ifrunistuttgart/node-mavlink';
 import {messageRegistry} from './assets/message-registry';
 
 import Serialport from 'serialport';
