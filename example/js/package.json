@@ -12,6 +12,7 @@
   "author": "Pascal Groß <pascal.gross@ifr.uni-stuttgart.de>",
   "license": "CC-BY-4.0",
   "dependencies": {
+    "@ifrunistuttgart/node-mavlink": "^0.1.0",
     "serialport": "^7.1.4"
   }
 }

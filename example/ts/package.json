@@ -26,6 +26,7 @@
     "typescript": "^3.3.4000"
   },
   "dependencies": {
+    "@ifrunistuttgart/node-mavlink": "^0.1.0",
     "serialport": "^7.1.4"
   }
 }
