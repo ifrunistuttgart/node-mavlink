@@ -3,7 +3,10 @@
 # node-mavlink
 node-mavlink is a library for parsing and packing MAVLink 2 messages using TypeScript or, when transpiled, using JavaScript in NodeJS. This project is an typed alternative for [node-mavlink](https://github.com/omcaree/node-mavlink) with the additional support of MAVLink2.
 ### Limitations
-At this point, message signing is not supported.
+At this point, not supported are:
+* message signing
+* arrays
+
 ## Installation
 The module is published on npm. Install using:
 
