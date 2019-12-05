@@ -24,6 +24,8 @@
 import {MAVLinkModule} from "../../mavlink-module";
 import {ParserState} from "../../parser-state.enum";
 import {messageRegistry} from "../../../assets/message-registry";
+import {MAVLinkMessage} from "../../mavlink-message";
+import {MessageInterval} from "../../../assets/messages/message-interval";
 
 let mavlinkModule: MAVLinkModule;
 
@@ -70,4 +72,20 @@ test('MessageStartNotFoundEmptyBuffer', () => {
     mavlinkModule.parse(Buffer.from([0x02, 0x11, 0xFF]));
     // @ts-ignore
     expect(mavlinkModule.parser.buffer.length).toBe(0);
+});
+
+test('MessageTruncated', () => {
+    const testMessage = new MessageInterval(255, 0);
+    testMessage.interval_us = 1;
+    const message_id = 2;
+    testMessage.message_id = message_id;
+    const testMessages: MAVLinkMessage[] = Array<MAVLinkMessage>();
+    testMessages.push(testMessage);
+
+    const buffer = mavlinkModule.pack(testMessages);
+    return mavlinkModule.parse(buffer).then(message => {
+        expect.assertions(1);
+        // @ts-ignore
+        expect(message[0].message_id).toBe(message_id);
+    });
 });
