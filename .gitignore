@@ -5,3 +5,5 @@ src/messages
 .idea
 assets/
 coverage/
+common.xml
+pymavlink/

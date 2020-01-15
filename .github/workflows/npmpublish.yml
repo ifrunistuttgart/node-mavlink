@@ -12,8 +12,14 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - run: npm install
+      - run: wget https://raw.githubusercontent.com/mavlink/mavlink/master/message_definitions/v1.0/common.xml
+      - run: git clone https://github.com/ArduPilot/pymavlink.git
+      - run: mkdir assets
+      - run: pip install future
+      - run: python pymavlink/tools/mavgen.py -o ./assets --lang TypeScript --wire-protocol 2.0 common.xml
+      - run: npm ci
       - run: npm run build
+      - run: cp -r lib node_modules/node-mavlink
       - run: npm run lint
       - run: npm test
       - run: npm run coveralls
