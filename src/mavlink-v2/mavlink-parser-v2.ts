@@ -79,7 +79,7 @@ export class MAVLinkParserV2 extends MAVLinkParserBase {
                     message[field_name] = this.read(payload, start, field_type);
                     start += field_length;
                 } else {
-                    if (payload.readUInt8(start) === 0) { // payload truncation (last field was zero)
+                    if (start >= payload.length || payload.readUInt8(start) === 0) { // payload truncation (last field was zero)
                         message[field_name] = 0;
                         start += field_length;
                     } else { // append the truncated zero bytes so that we can parse the last field

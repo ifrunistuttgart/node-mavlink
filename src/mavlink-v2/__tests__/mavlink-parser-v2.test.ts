@@ -89,3 +89,10 @@ test('MessageTruncated', () => {
         expect(message[0].message_id).toBe(message_id);
     });
 });
+
+test('MessageTruncatedNonTrailingZero', () => {
+    const buffer = Buffer.from([0xfd, 0x5, 0x0, 0x0, 0x0, 0xff, 0x0, 0x2, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x3, 0x27, 0xdb])
+
+    expect.assertions(1);
+    return expect(mavlinkModule.parse(buffer)).resolves.toBeDefined();
+});
