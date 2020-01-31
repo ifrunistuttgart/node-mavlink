@@ -22,9 +22,11 @@
  */
 
 import {CommandLong} from "../../../assets/messages/command-long";
+import {MissionCount} from "../../../assets/messages/mission-count";
 import {MavCmd} from "../../../assets/enums/mav-cmd";
 import {MAVLinkModule} from "../../mavlink-module";
 import {messageRegistry} from "../../../assets/message-registry";
+import { MavMissionType } from "../../../assets/enums/mav-mission-type";
 
 let mavlinkModule: MAVLinkModule;
 
@@ -48,4 +50,25 @@ test('MessagePackUnpack', async () => {
     const messages = await mavlinkModule.parse(mavlinkModule.pack([cmd]));
     // @ts-ignore
     expect(messages[0].command).toBe(MavCmd.MAV_CMD_REQUEST_PROTOCOL_VERSION);
+});
+
+test('MessageExtensionPackUnpack', async () => {
+    const msg = new MissionCount(1, 0);
+    msg.count = 16;
+    msg.mission_type = MavMissionType.MAV_MISSION_TYPE_FENCE;
+    const messages = await mavlinkModule.parse(mavlinkModule.pack([msg]));
+    // @ts-ignore
+    expect(messages[0]._message_id).toBe(msg._message_id);
+    expect(messages[0].mission_type).toBe(MavMissionType.MAV_MISSION_TYPE_FENCE);
+});
+
+test('MessageTruncation', async () => { // should truncate target_component and missiont_type
+    const msg = new MissionCount(1, 0);
+    msg.count = 16;
+    msg.target_system = 1;
+    msg.target_component = 0;
+    msg.mission_type = MavMissionType.MAV_MISSION_TYPE_MISSION;
+    const packedMsg = mavlinkModule.pack([msg]);
+    // @ts-ignore
+    expect(packedMsg.length).toBe(15) // min packet length = 12, count = 2, target_system = 1: 15
 });

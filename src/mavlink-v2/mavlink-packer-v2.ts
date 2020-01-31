@@ -33,9 +33,8 @@ export class MAVLinkPackerV2 extends MAVLinkPackerBase {
     }
 
     packMessage(message: MAVLinkMessage): Buffer {
-        const buffer = Buffer.alloc(this.minimum_packet_length + message._payload_length);
+        let buffer = Buffer.alloc(this.minimum_packet_length + message._payload_length + message._extension_length);
         buffer.writeUInt8(this.start_marker, 0);
-        buffer.writeUInt8(message._payload_length, 1);
         buffer.writeUInt8(0, 2);
         buffer.writeUInt8(0, 3);
         buffer.writeUInt8(0, 4);
@@ -49,15 +48,23 @@ export class MAVLinkPackerV2 extends MAVLinkPackerBase {
             const field_type: string = field[1];
             const extension_field: boolean = field[2];
             const field_length = message.sizeof(field_type);
-            if (!extension_field) {
-                this.write(buffer, message[field_name], start + this.minimum_packet_length - 2, field_type);
-                start += field_length;
-            }
+            this.write(buffer, message[field_name], start + this.minimum_packet_length - 2, field_type);
+            start += field_length;
         }
 
-        let actual = message.x25CRC(buffer.slice(1, this.minimum_packet_length + message._payload_length - 2));
+        const last_payload_byte_position = this.minimum_packet_length - 2 + message._payload_length + message._extension_length;
+        start = last_payload_byte_position - 1;  // start at offset for last payload byte
+        let bytes_to_truncate = 0; // This value indicates trailing bytes that are 0 from payload
+        while (buffer.readUInt8(start) === 0 && bytes_to_truncate <= message._payload_length + message._extension_length ) {
+            bytes_to_truncate++, start--;
+        }
+        if (bytes_to_truncate) {
+            buffer = Buffer.concat([buffer.slice(0, last_payload_byte_position - bytes_to_truncate), buffer.slice(last_payload_byte_position)]);
+        }
+        buffer.writeUInt8(message._payload_length + message._extension_length - bytes_to_truncate, 1); // set payload len
 
-        buffer.writeUInt16LE(actual, this.minimum_packet_length + message._payload_length - 2);
+        let checksum = message.x25CRC(buffer.slice(1, last_payload_byte_position - bytes_to_truncate));
+        buffer.writeUInt16LE(checksum, last_payload_byte_position - bytes_to_truncate);
         return buffer;
     }
 
