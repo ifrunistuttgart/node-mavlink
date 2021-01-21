@@ -50,7 +50,7 @@ export class MAVLinkParserV2 extends MAVLinkParserBase {
             return undefined;
         const crc = bytes.readUInt16LE(len + this.minimum_packet_length - 2);
 
-        let message;
+        let message: MAVLinkMessage;
         try {
             message = this.instantiateMessage(sysid, compid, msgid);
 
@@ -67,7 +67,16 @@ export class MAVLinkParserV2 extends MAVLinkParserBase {
                 throw new Error('Not enough bytes in buffer to parse the message.');
             }
 
-            const payload = bytes.slice(this.minimum_packet_length - 2, len + this.minimum_packet_length - 2);
+            let payload = bytes.slice(this.minimum_packet_length - 2, len + this.minimum_packet_length - 2);
+
+            // calculate expected payload length from message definition
+            const full_payload_length = message._message_fields.reduce((sum: number, field) => sum + message.sizeof(field[1]), 0)
+            if(payload.length < full_payload_length) {
+                // allocate and append the truncated zero bytes
+                const truncated: Buffer = payload.slice(0);
+                const filler: Buffer = Buffer.alloc(full_payload_length - truncated.length);
+                payload = Buffer.concat([truncated, filler]);
+            }
 
             let start = 0;
             for (const field of message._message_fields) {
@@ -75,21 +84,8 @@ export class MAVLinkParserV2 extends MAVLinkParserBase {
                 const field_type: string = field[1];
                 const extension_field: boolean = field[2];
                 const field_length = message.sizeof(field_type);
-                if (payload.length > start + field_length) {
-                    message[field_name] = this.read(payload, start, field_type);
-                    start += field_length;
-                } else {
-                    if (payload.readUInt8(start) === 0) { // payload truncation (last field was zero)
-                        message[field_name] = 0;
-                        start += field_length;
-                    } else { // append the truncated zero bytes so that we can parse the last field
-                        const truncated: Buffer = payload.slice(start);
-                        const filler: Buffer = Buffer.alloc(field_length - truncated.length);
-                        const buf = Buffer.concat([truncated, filler]);
-                        message[field_name] = this.read(buf, 0, field_type);
-                        start += field_length;
-                    }
-                }
+                message[field_name] = this.read(payload, start, field_type);
+                start += field_length;
             }
 
             return message;
