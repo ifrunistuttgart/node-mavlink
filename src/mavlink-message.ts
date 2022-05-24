@@ -147,7 +147,7 @@ export abstract class MAVLinkMessage implements IMAVLinkMessage, IIndexable {
 
     get _extension_length(): number {
         let length = 0;
-        for (let field of this._message_fields.filter(field => !field[2])) {
+        for (let field of this._message_fields.filter(field => field[2])) {
             length += this.sizeof(field[1]);
         }
         return length;
